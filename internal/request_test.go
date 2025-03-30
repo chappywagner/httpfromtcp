@@ -3,6 +3,7 @@ package request
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"strings"
 	"testing"
@@ -47,6 +48,8 @@ func requestLineFromString(str string)(*RequestLine,error){
 
 	lines:= strings.Split(str,"\r\n")
 	
+	fmt.Println(str)
+
 	if len(lines)==0{
 		return nil, errors.New("no data found")
 	}
