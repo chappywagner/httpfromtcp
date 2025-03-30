@@ -1,8 +1,8 @@
 package request
 
 import (
+	"bytes"
 	"errors"
-	"fmt"
 	"io"
 	"strings"
 	"testing"
@@ -21,18 +21,31 @@ type RequestLine struct {
 	RequestTarget string
 	Method        string
 }
-
-func RequestFromReader(reader io.Reader) (*Request, error){
+func parseRequestData(data []byte)(*RequestLine, error){
+// this function gets the requestline from the entire byte array
+// and returns a requestline struct
+	new_line_idx := bytes.Index(data, []byte("\r\n"))
 	
-	request,err:=io.ReadAll(reader)
+	if new_line_idx == -1{
+		return nil, errors.New("couldn't find new line in request-line")
+
+	}
+	request_text := string(data[:new_line_idx])
+
+	requestLine,err := requestLineFromString(request_text)
 	
 	if err!=nil{
+	
 		return nil, err
+	
 	}
-	
-	content:= string(request)
-	
-	lines:= strings.Split(content,"\r\n")
+	return requestLine,nil
+
+}
+
+func requestLineFromString(str string)(*RequestLine,error){
+
+	lines:= strings.Split(str,"\r\n")
 	
 	if len(lines)==0{
 		return nil, errors.New("no data found")
@@ -43,16 +56,20 @@ func RequestFromReader(reader io.Reader) (*Request, error){
 	if len(request_line) !=3{
 		return nil, errors.New("invalid request")
 	}
-	valid:=true
+
+	valid := true
+
 	for _,s := range request_line[0]{
 		if unicode.IsUpper(s)!= true{
 			valid = false
 			break
 		}
 	}
+
 	if !valid{
 		return nil, errors.New("invalid method type")
 	}
+
 	method:=request_line[0]
 	
 	target:=request_line[1]
@@ -60,16 +77,35 @@ func RequestFromReader(reader io.Reader) (*Request, error){
 	if request_line[2]!="HTTP/1.1"{
 		return nil, errors.New("invalid http version, HTTP 1.1 only supported")
 	}
+
 	http_version:= strings.Replace(request_line[2],"HTTP/","",1)
 
-	req := &Request{
-		RequestLine: RequestLine{ 
+	return &RequestLine{ 
 			HttpVersion: http_version,
 			Method: method,
-			RequestTarget: target},
+			RequestTarget: target,
+			},nil
+		
+		
+}
+
+func RequestFromReader(reader io.Reader) (*Request, error){
+	
+	data,err := io.ReadAll(reader)
+	
+	if err!=nil{
+		return nil, err
 	}
-	fmt.Println(lines[0])
- 	return req,nil
+	
+	request_line,err:= parseRequestData(data)
+	
+	if err!=nil{
+		return nil, err
+	}
+
+ 	return &Request{
+		RequestLine: *request_line},
+		nil 
 }
 
 func TestRequestLineParse(t *testing.T) {
