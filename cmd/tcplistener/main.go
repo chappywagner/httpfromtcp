@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+	"internal/request"
 	"io"
 	"log"
 	"net"
 	"strings"
+
+	"github.com/golang-jwt/jwt/v5/request"
 )
 
 const port = ":42069"
@@ -26,12 +29,14 @@ func main() {
 		}
 		fmt.Println("Accepted connection from", conn.RemoteAddr())
 
-		linesChan := getLinesChannel(conn)
+		linesChan := request.RequestFromReader(conn)
 
-		for line := range linesChan {
-			fmt.Println(line)
-		}
-		fmt.Println("Connection to ", conn.RemoteAddr(), "closed")
+		fmt.Println("Request line:\n")
+		fmt.Printf("- Method: %s\n-Target: %s/\n-Version: %s",&linesChan.Method,&linesChan.Target,&linesChan.Version)
+		//for line := range linesChan {
+		//		fmt.Println(line)
+		//		}
+		//	fmt.Println("Connection to ", conn.RemoteAddr(), "closed")
 	}
 
 }
