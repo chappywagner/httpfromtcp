@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"internal/request"
-	"io"
 	"log"
 	"net"
-	"strings"
 
-	"github.com/golang-jwt/jwt/v5/request"
+	"github.com/chappywagner/httpfromtcp/internal/request"
+	//"github.com/golang-jwt/jwt/v5/request"
 )
 
 const port = ":42069"
@@ -29,10 +27,10 @@ func main() {
 		}
 		fmt.Println("Accepted connection from", conn.RemoteAddr())
 
-		linesChan := request.RequestFromReader(conn)
+		linesChan, _ := request.RequestFromReader(conn)
 
-		fmt.Println("Request line:\n")
-		fmt.Printf("- Method: %s\n-Target: %s/\n-Version: %s",&linesChan.Method,&linesChan.Target,&linesChan.Version)
+		fmt.Println("Request line:")
+		fmt.Printf("- Method: %s\n- Target: %s/\n- Version: %s",linesChan.RequestLine.Method,linesChan.RequestLine.RequestTarget,linesChan.RequestLine.HttpVersion)
 		//for line := range linesChan {
 		//		fmt.Println(line)
 		//		}
@@ -41,7 +39,7 @@ func main() {
 
 }
 
-func getLinesChannel(f io.ReadCloser) (<-chan string){
+/*func getLinesChannel(f io.ReadCloser) (<-chan string){
 	
 	
 	str_chan := make(chan string)
@@ -89,5 +87,6 @@ func getLinesChannel(f io.ReadCloser) (<-chan string){
 
 	return str_chan
 }
+	*/
 
 
