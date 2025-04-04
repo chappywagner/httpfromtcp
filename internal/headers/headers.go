@@ -15,6 +15,8 @@ func NewHeaders() Headers{
 func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 // based upon tests, a valid header will not start with any spacing
 // and must end with \r\n\r\n
+	fmt.Printf("Parsing header data: %s...\r\n",string(data))
+	
 	nbytes := 0
 	for !done{
 		
