@@ -50,14 +50,13 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 
 		sepidx := bytes.Index(data,[]byte(": "))
 		key := string(bytes.Trim(data[:sepidx]," "))
-		val := string(bytes.Trim(data[sepidx:endidx]," "))
+		val := string(bytes.Trim(data[sepidx+2:endidx]," "))
 		nbytes += len(key) + len(val)
 
 		h[key]=val
 		newdata:=make([]byte,len(data)-len(CRLF))
 		copy(newdata,data[endidx:endidx+len(CRLF)])
 		data = newdata
-
 		fmt.Printf("new data value is %s\r\nbytes read: %v",string(data),nbytes)
 
 	}
