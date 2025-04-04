@@ -3,6 +3,7 @@ package headers
 import (
 	"bytes"
 	"errors"
+	"fmt"
 )
 
 type Headers map[string]string 
@@ -22,12 +23,12 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 	}
 
 	idx := bytes.Index(data,[]byte(":"))
-	
+	fmt.Printf("idx is %v",idx)
 	if idx == -1 || idx < 4{
 		return 0,false, errors.New("improper header")
 	}	
 	
-	if data[idx-1] == ' '{
+	if data[idx - 1] == ' '{
 		return 0,false, errors.New("improper header")
 	}
 
