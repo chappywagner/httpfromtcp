@@ -1,10 +1,11 @@
 package request
 
 import (
-	"httpfromtcp/internal/request"
 	"io"
 	"strings"
 	"testing"
+
+	"github.com/chappywagner/httpfromtcp/internal/request"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
