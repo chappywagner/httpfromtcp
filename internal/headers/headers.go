@@ -5,12 +5,12 @@ import (
 	"errors"
 )
 
-type Headers struct{
-
-  Values map[string]string
-
-}
+type Headers map[string]string 
 const CRLF = "\r\n\r\n"
+
+func NewHeaders() Headers{
+	return make( map[string]string)
+}
 func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 // based upon tests, a valid header will not start with any spacing
 // and must end with \r\n\r\n
@@ -50,7 +50,7 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 		val := string(bytes.Trim(data[sepidx:endidx]," "))
 		nbytes += len(key) + len(val)
 
-		h.Values[key]=val
+		h[key]=val
 		newdata:=make([]byte,len(data)-len(CRLF))
 		copy(newdata,data[endidx:endidx+len(CRLF)])
 		data = newdata

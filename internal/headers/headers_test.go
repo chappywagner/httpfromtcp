@@ -1,12 +1,13 @@
 package headers
 
-import(
+import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func(t *testing.T){
+func TestHeaderLine(t *testing.T){
 
 // Test: Valid single header
 headers := NewHeaders()
