@@ -1,4 +1,4 @@
-package request
+package request_test
 
 import (
 	"io"
