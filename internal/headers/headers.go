@@ -25,11 +25,11 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 	idx := bytes.Index(data,[]byte(":"))
 	fmt.Printf("  **** Index of : is %v\n",idx)
 	if idx == -1 || idx < 4{
-		return 0,false, errors.New("improper header")
+		return 0,false, errors.New("improperly formatted header")
 	}	
 	
 	if data[idx - 1] == ' '{
-		return 0,false, errors.New("improper header")
+		return 0,false, errors.New("improperly formatted header")
 	}
 
 		//
@@ -55,6 +55,8 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 		newdata:=make([]byte,len(data)-len(CRLF))
 		copy(newdata,data[endidx:endidx+len(CRLF)])
 		data = newdata
+
+		fmt.Printf("new data value is %s\r\n",string(data))
 
 	}
 
