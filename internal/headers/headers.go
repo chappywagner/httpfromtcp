@@ -23,7 +23,7 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 	}
 
 	idx := bytes.Index(data,[]byte(":"))
-	fmt.Printf("idx is %v",idx)
+	fmt.Printf("  **** Index of : is %v\n",idx)
 	if idx == -1 || idx < 4{
 		return 0,false, errors.New("improper header")
 	}	
