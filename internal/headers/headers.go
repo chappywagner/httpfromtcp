@@ -15,20 +15,20 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 // based upon tests, a valid header will not start with any spacing
 // and must end with \r\n\r\n
 	nbytes := 0
-	for done == false{
+	for !done{
 		
 	if len(data)==0{
-		return 0, true, errors.New("No data")
+		return 0, true, errors.New("no data")
 	}
 
 	idx := bytes.Index(data,[]byte(":"))
 	
 	if idx == -1 || idx < 4{
-		return 0,false, errors.New("Improper header")
+		return 0,false, errors.New("improper header")
 	}	
 	
 	if data[idx-1] == ' '{
-		return 0,false, errors.New("Improper header")
+		return 0,false, errors.New("improper header")
 	}
 
 		//
