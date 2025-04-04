@@ -56,7 +56,7 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 		copy(newdata,data[endidx:endidx+len(CRLF)])
 		data = newdata
 
-		fmt.Printf("new data value is %s\r\n",string(data))
+		fmt.Printf("new data value is %s\r\nbytes read: %v",string(data),nbytes)
 
 	}
 
