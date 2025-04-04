@@ -55,7 +55,7 @@ func (h Headers) Parse(data [] byte) (n int, done bool, err error){
 
 		h[key]=val
 		newdata:=make([]byte,len(data)-len(CRLF))
-		copy(newdata,data[endidx:endidx+len(CRLF)])
+		copy(newdata,data[endidx:])
 		data = newdata
 		fmt.Printf("new data value is %s\r\nbytes read: %v",string(data),nbytes)
 
